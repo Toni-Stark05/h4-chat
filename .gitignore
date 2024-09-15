@@ -1,0 +1,6 @@
+# ida
+.idea
+
+# env
+config/prod.yaml
+config/test.yaml
