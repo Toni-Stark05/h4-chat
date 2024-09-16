@@ -2,7 +2,9 @@ package config
 
 import (
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/samber/do"
 	"log"
+	"log/slog"
 	"os"
 	"time"
 )
@@ -18,7 +20,7 @@ type HTTPServer struct {
 	IdleTimeout time.Duration `yaml:"idle_timeout"`
 }
 
-func MustLoad() *Config {
+func mustLoad() *Config {
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH environment variable not set")
@@ -35,4 +37,11 @@ func MustLoad() *Config {
 	}
 
 	return &cfg
+}
+
+func NewConfig(i *do.Injector) (*Config, error) {
+	logger := do.MustInvoke[*slog.Logger](i)
+	cfg := mustLoad()
+	logger.Info("Config initialized", slog.String("env", cfg.Env))
+	return cfg, nil
 }
