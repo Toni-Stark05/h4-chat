@@ -12,12 +12,21 @@ import (
 type Config struct {
 	Env        string `yaml:"env"`
 	HTTPServer `yaml:"http_server"`
+	Postgres   `yaml:"postgres"`
 }
 
 type HTTPServer struct {
 	Address     string        `yaml:"address"`
 	Timeout     time.Duration `yaml:"timeout"`
 	IdleTimeout time.Duration `yaml:"idle_timeout"`
+}
+
+type Postgres struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	Database string `yaml:"database"`
 }
 
 func mustLoad() *Config {

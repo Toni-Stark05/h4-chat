@@ -8,6 +8,7 @@ import (
 	"h4-chat/internal/http-server"
 	"h4-chat/internal/logger"
 	"h4-chat/internal/modules/auth"
+	"h4-chat/internal/providers/db"
 	"log"
 	"log/slog"
 	"net/http"
@@ -33,6 +34,11 @@ func (a App) Run() {
 	do.Provide(a.injector, http_server.NewRouter)
 
 	a.registrationModule()
+
+	do.Provide(a.injector, db.NewPGProvider)
+	_, err := do.Invoke[*db.PGProvider](a.injector)
+	if err != nil {
+	}
 
 	a.buildApp()
 }
